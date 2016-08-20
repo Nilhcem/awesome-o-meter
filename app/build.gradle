@@ -13,6 +13,9 @@ buildscript {
 
 repositories {
     mavenCentral()
+    maven {
+        url 'https://github.com/uPhyca/stetho-realm/raw/master/maven-repo'
+    }
 }
 
 apply plugin: 'com.android.application'
@@ -38,8 +41,18 @@ android {
         }
     }
 
+    productFlavors {
+        internal {
+            buildConfigField 'boolean', 'INTERNAL_BUILD', "true"
+        }
+        production {
+            buildConfigField 'boolean', 'INTERNAL_BUILD', "false"
+        }
+    }
+
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
+        internal.java.srcDirs += 'src/internal/kotlin'
     }
 }
 
@@ -47,4 +60,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.2.0'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile "org.jetbrains.kotlin:kotlin-reflect:${kotlin_version}"
+
+    internalCompile 'com.facebook.stetho:stetho:1.3.1'
+    internalCompile 'com.uphyca:stetho_realm:0.9.0'
 }
