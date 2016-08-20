@@ -2,9 +2,9 @@ package com.nilhcem.clickclick.ui
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import com.nilhcem.clickclick.R
 import com.nilhcem.clickclick.repository.ClickRepository
+import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 
@@ -16,6 +16,6 @@ class MainActivity : AppCompatActivity() {
         repo.insert()
 
         // Find the first click and read a field
-        Log.e("MAIN", "NB CLICKS: ${repo.getTotal()}")
+        Timber.e("NB CLICKS: ${repo.getTotal()}")
     }
 }
