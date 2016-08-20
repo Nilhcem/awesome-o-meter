@@ -2,7 +2,9 @@ package com.nilhcem.clickclick.repository
 
 import java.util.*
 
-class ClickRepository(val realm: ClickRealmDataSource = ClickRealmDataSource()) {
+class ClickRepository() {
+
+    private val realm = ClickRealmDataSource()
 
     fun insert() {
         realm.insert(Date())
