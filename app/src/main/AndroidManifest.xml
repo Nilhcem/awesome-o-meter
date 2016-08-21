@@ -21,6 +21,12 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".ui.SelectDeviceActivity"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme.Transparent"/>
+
         <service
             android:name=".services.HeadsetObserverService"
             android:exported="false"/>
@@ -30,13 +36,6 @@
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
                 <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
-            </intent-filter>
-        </receiver>
-
-        <receiver
-            android:name=".services.receivers.HeadsetPluggedReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.HEADSET_PLUG"/>
             </intent-filter>
         </receiver>
     </application>

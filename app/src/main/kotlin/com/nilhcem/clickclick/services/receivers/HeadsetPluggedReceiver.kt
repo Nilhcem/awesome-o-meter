@@ -4,31 +4,90 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import com.nilhcem.clickclick.model.app.SelectedDevice
+import com.nilhcem.clickclick.repository.ConfigRepository
+import com.nilhcem.clickclick.ui.SelectDeviceActivity
 import timber.log.Timber
 
 class HeadsetPluggedReceiver : BroadcastReceiver() {
 
     companion object {
+        private val CUSTOM_ACTION = "com.nilhcem.clickclick.action.ACTION_START"
+        private val EXTRA_STATE = "state"
+        private val EXTRA_MICROPHONE = "microphone"
+
         fun register(context: Context): HeadsetPluggedReceiver {
             val receiver = HeadsetPluggedReceiver()
             context.registerReceiver(receiver, IntentFilter(Intent.ACTION_HEADSET_PLUG))
+            context.registerReceiver(receiver, IntentFilter(CUSTOM_ACTION))
             return receiver
         }
 
         fun unregister(context: Context, receiver: HeadsetPluggedReceiver) {
             context.unregisterReceiver(receiver)
         }
+
+        fun notifyDevicePluggedIn(context: Context, device: SelectedDevice) {
+            val intent = Intent(CUSTOM_ACTION)
+            intent.putExtra(EXTRA_STATE, 1)
+            intent.putExtra(EXTRA_MICROPHONE, if (device == SelectedDevice.MIKEY) 1 else 0)
+            context.sendBroadcast(intent)
+        }
     }
 
     override fun onReceive(context: Context, intent: Intent) {
-        val isPlugged = intent.getIntExtra("state", 0) != 0
-        val hasMicrophone = intent.getIntExtra("microphone", 0) == 1
+        val config = ConfigRepository(context)
+        val selectedDevice = config.getSelectedDevice()
+        val state = intent.getIntExtra(EXTRA_STATE, 0)
+        val hasMicrophone = intent.getIntExtra(EXTRA_MICROPHONE, 0) == 1
 
-        if (isPlugged) {
-            // Mi Key is considered as having a microphone
-            Timber.i("Headset plugged ${intent.getIntExtra("state", 0)} - hasMic: $hasMicrophone")
+        if (state == 0) {
+            if (selectedDevice != SelectedDevice.UNDEFINED) {
+                onDeviceUnplugged(context, config, selectedDevice)
+            }
         } else {
-            Timber.i("Headset unplugged")
+            if (state == 1 && hasMicrophone) {
+                onMiKeyPluggedIn(context, config, selectedDevice)
+            } else {
+                onHeadsetPluggedIn(config, selectedDevice)
+            }
+        }
+    }
+
+    private fun onDeviceUnplugged(context: Context, config: ConfigRepository, selectedDevice: SelectedDevice) {
+        when (selectedDevice) {
+            SelectedDevice.PENDING -> {
+                Timber.d("Dismiss device selection")
+                SelectDeviceActivity.dismiss(context)
+            }
+            SelectedDevice.HEADSET -> {
+                Timber.d("Headset unplugged")
+            }
+            SelectedDevice.MIKEY -> {
+                Timber.d("MiKey unplugged")
+                // TODO stop routing audio + listening to click events
+            }
+        }
+
+        config.setSelectedDevice(SelectedDevice.UNDEFINED)
+    }
+
+    private fun onHeadsetPluggedIn(config: ConfigRepository, selectedDevice: SelectedDevice) {
+        Timber.d("Headset plugged in")
+
+        if (selectedDevice != SelectedDevice.HEADSET) {
+            config.setSelectedDevice(SelectedDevice.HEADSET)
+        }
+    }
+
+    private fun onMiKeyPluggedIn(context: Context, config: ConfigRepository, selectedDevice: SelectedDevice) {
+        if (selectedDevice == SelectedDevice.MIKEY) {
+            Timber.d("MiKey plugged in")
+            // TODO: start routing audio + listening to click events
+        } else {
+            Timber.d("(MiKey || Headset) plugged in. Ask user to select which device it actually is")
+            config.setSelectedDevice(SelectedDevice.PENDING)
+            SelectDeviceActivity.show(context)
         }
     }
 }

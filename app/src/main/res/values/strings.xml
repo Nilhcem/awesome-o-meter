@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Awesome-o-meter</string>
+
+    <!-- Select plugged device -->
+    <string name="select_device_title">Select device</string>
+    <string name="select_device_message">If device is a MiKey, audio will be redirected to the phone speaker.</string>
+    <string name="select_device_headset">Headphones</string>
+    <string name="select_device_mikey">Mi-Key</string>
 </resources>
