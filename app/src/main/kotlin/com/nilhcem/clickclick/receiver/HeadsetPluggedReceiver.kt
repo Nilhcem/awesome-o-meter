@@ -7,7 +7,7 @@ import android.content.IntentFilter
 import com.nilhcem.clickclick.model.app.SelectedDevice
 import com.nilhcem.clickclick.repository.ConfigRepository
 import com.nilhcem.clickclick.service.MiKeyService
-import com.nilhcem.clickclick.ui.SelectDeviceActivity
+import com.nilhcem.clickclick.ui.headset.SelectDeviceActivity
 import timber.log.Timber
 
 class HeadsetPluggedReceiver : BroadcastReceiver() {

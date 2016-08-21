@@ -1,4 +1,4 @@
-package com.nilhcem.clickclick.ui
+package com.nilhcem.clickclick.ui.headset
 
 import android.content.Context
 import android.content.Intent

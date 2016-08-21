@@ -22,7 +22,7 @@
         </activity>
 
         <activity
-            android:name=".ui.SelectDeviceActivity"
+            android:name=".ui.headset.SelectDeviceActivity"
             android:excludeFromRecents="true"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.Transparent"/>
