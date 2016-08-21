@@ -14,9 +14,12 @@ import timber.log.Timber
 class MediaButtonReceiver : BroadcastReceiver() {
 
     companion object {
+        private val ACTION_LONG_CLICK = "com.nilhcem.clickclick.action.LONG_CLICK"
+
         fun enable(context: Context) = setComponentEnable(context, true)
         fun disable(context: Context) = setComponentEnable(context, false)
         fun getComponentName(context: Context) = ComponentName(context, MediaButtonReceiver::class.java)
+        fun receiveLongClick(context: Context) = context.sendBroadcast(Intent(ACTION_LONG_CLICK))
 
         private fun setComponentEnable(context: Context, enable: Boolean) {
             val newState = if (enable) PackageManager.COMPONENT_ENABLED_STATE_ENABLED else PackageManager.COMPONENT_ENABLED_STATE_DISABLED
@@ -27,12 +30,16 @@ class MediaButtonReceiver : BroadcastReceiver() {
     private val clickRepo = ClickRepository()
 
     override fun onReceive(context: Context, intent: Intent) {
-        Preconditions.checkArgument(intent.action == Intent.ACTION_MEDIA_BUTTON)
-        val keyEvent = checkNotNull(intent.getParcelableExtra<KeyEvent>(Intent.EXTRA_KEY_EVENT))
-
-        if (keyEvent.action == KeyEvent.ACTION_UP) {
-            Timber.i("MediaButton clicked")
+        if (intent.action == ACTION_LONG_CLICK) {
+            Timber.i("Long click received")
             clickRepo.insert()
+        } else {
+            Preconditions.checkArgument(intent.action == Intent.ACTION_MEDIA_BUTTON)
+            val keyEvent = checkNotNull(intent.getParcelableExtra<KeyEvent>(Intent.EXTRA_KEY_EVENT))
+            if (keyEvent.action == KeyEvent.ACTION_UP) {
+                Timber.i("Click received")
+                clickRepo.insert()
+            }
         }
     }
 }

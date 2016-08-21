@@ -27,6 +27,19 @@
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.Transparent"/>
 
+        <activity
+            android:name=".ui.headset.LongClickActivity"
+            android:theme="@style/AppTheme.Transparent">
+            <intent-filter android:priority="2147483647">
+                <action android:name="android.speech.action.WEB_SEARCH"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <intent-filter android:priority="2147483647">
+                <action android:name="android.speech.action.VOICE_SEARCH_HANDS_FREE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
         <service
             android:name=".service.MiKeyService"
             android:exported="false"/>
@@ -46,6 +59,9 @@
             <intent-filter>
                 <action android:name="android.intent.action.MEDIA_BUTTON"/>
                 <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.nilhcem.clickclick.action.LONG_CLICK"/>
             </intent-filter>
         </receiver>
     </application>
