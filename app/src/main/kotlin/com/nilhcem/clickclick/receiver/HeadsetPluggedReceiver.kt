@@ -17,6 +17,7 @@ class HeadsetPluggedReceiver : BroadcastReceiver() {
         private val EXTRA_STATE = "state"
         private val EXTRA_MICROPHONE = "microphone"
 
+        // We must register this receiver programmatically (due to FLAG_RECEIVER_REGISTERED_ONLY)
         fun register(context: Context): HeadsetPluggedReceiver {
             val receiver = HeadsetPluggedReceiver()
             context.registerReceiver(receiver, IntentFilter(Intent.ACTION_HEADSET_PLUG))

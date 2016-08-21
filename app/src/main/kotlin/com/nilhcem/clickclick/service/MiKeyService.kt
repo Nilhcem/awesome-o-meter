@@ -4,12 +4,12 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import com.nilhcem.clickclick.receiver.HeadsetPluggedReceiver
+import com.nilhcem.clickclick.service.helper.MediaButtonHelper
 import timber.log.Timber
 
 class MiKeyService : Service() {
 
     companion object {
-
         private val EXTRA_MIKEY_ENABLED = "miKeyEnabled"
 
         fun start(context: Context, miKeyEnabled: Boolean? = null) {
@@ -22,6 +22,7 @@ class MiKeyService : Service() {
     }
 
     private lateinit var headsetPluggedReceiver: HeadsetPluggedReceiver
+    private lateinit var mediaButtonHelper: MediaButtonHelper
 
     override fun onBind(intent: Intent) = null
 
@@ -33,10 +34,12 @@ class MiKeyService : Service() {
             if (intent.hasExtra(EXTRA_MIKEY_ENABLED)) {
                 if (intent.getBooleanExtra(EXTRA_MIKEY_ENABLED, false)) {
                     Timber.d("Enable MiKey service features")
-                    // TODO
+                    mediaButtonHelper.enableReceiver()
+                    // TODO: enableAudioRouting()
                 } else {
                     Timber.d("Disable MiKey service features")
-                    // TODO
+                    mediaButtonHelper.disableReceiver()
+                    // TODO: disableAudioRouting()
                 }
             }
         }
@@ -46,14 +49,14 @@ class MiKeyService : Service() {
     override fun onCreate() {
         super.onCreate()
         Timber.d("onCreate")
-
-        // We must register this receiver programmatically (FLAG_RECEIVER_REGISTERED_ONLY)
         headsetPluggedReceiver = HeadsetPluggedReceiver.register(this)
+        mediaButtonHelper = MediaButtonHelper(this)
     }
 
     override fun onDestroy() {
         Timber.d("onDestroy")
         HeadsetPluggedReceiver.unregister(this, headsetPluggedReceiver)
+        mediaButtonHelper.disableReceiver()
         super.onDestroy()
     }
 }

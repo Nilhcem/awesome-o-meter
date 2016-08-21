@@ -32,10 +32,20 @@
             android:exported="false"/>
 
         <receiver
-            android:name=".receiver.BootReceiver">
+            android:name=".receiver.BootReceiver"
+            android:enabled="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
                 <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".receiver.MediaButtonReceiver"
+            android:enabled="false">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON"/>
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </receiver>
     </application>
