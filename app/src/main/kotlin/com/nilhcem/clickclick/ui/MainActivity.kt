@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.nilhcem.clickclick.R
 import com.nilhcem.clickclick.repository.ClickRepository
-import com.nilhcem.clickclick.services.HeadsetObserverService
+import com.nilhcem.clickclick.service.MiKeyService
 import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
@@ -19,6 +19,6 @@ class MainActivity : AppCompatActivity() {
         // Find the first click and read a field
         Timber.e("NB CLICKS: ${repo.getTotal()}")
 
-        HeadsetObserverService.start(this)
+        MiKeyService.start(this)
     }
 }

@@ -1,16 +1,16 @@
-package com.nilhcem.clickclick.services
+package com.nilhcem.clickclick.service
 
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import com.nilhcem.clickclick.services.receivers.HeadsetPluggedReceiver
+import com.nilhcem.clickclick.receiver.HeadsetPluggedReceiver
 import timber.log.Timber
 
-class HeadsetObserverService : Service() {
+class MiKeyService : Service() {
 
     companion object {
         fun start(context: Context) {
-            context.startService(Intent(context, HeadsetObserverService::class.java))
+            context.startService(Intent(context, MiKeyService::class.java))
         }
     }
 

@@ -28,11 +28,11 @@
             android:theme="@style/AppTheme.Transparent"/>
 
         <service
-            android:name=".services.HeadsetObserverService"
+            android:name=".service.MiKeyService"
             android:exported="false"/>
 
         <receiver
-            android:name=".services.receivers.BootReceiver">
+            android:name=".receiver.BootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
                 <action android:name="android.intent.action.QUICKBOOT_POWERON"/>

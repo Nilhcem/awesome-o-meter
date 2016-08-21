@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity
 import com.nilhcem.clickclick.R
 import com.nilhcem.clickclick.model.app.SelectedDevice
 import com.nilhcem.clickclick.repository.ConfigRepository
-import com.nilhcem.clickclick.services.receivers.HeadsetPluggedReceiver
+import com.nilhcem.clickclick.receiver.HeadsetPluggedReceiver
 
 class SelectDeviceActivity : AppCompatActivity() {
 

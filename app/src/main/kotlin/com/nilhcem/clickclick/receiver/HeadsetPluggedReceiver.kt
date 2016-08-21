@@ -1,4 +1,4 @@
-package com.nilhcem.clickclick.services.receivers
+package com.nilhcem.clickclick.receiver
 
 import android.content.BroadcastReceiver
 import android.content.Context
