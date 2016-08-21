@@ -12,13 +12,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        val repo = ClickRepository()
-        repo.insert()
-
-        // Find the first click and read a field
-        Timber.e("NB CLICKS: ${repo.getTotal()}")
-
         MiKeyService.start(this)
+
+        Timber.e("NB CLICKS: ${ClickRepository().getTotal()}")
     }
 }
