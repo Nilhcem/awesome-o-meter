@@ -1,7 +1,6 @@
 package com.nilhcem.clickclick.repository
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import com.nilhcem.clickclick.model.app.SelectedDevice
 
@@ -12,11 +11,7 @@ class ConfigSharedPrefsDataSource(context: Context) {
         val KEY_SELECTED_DEVICE = "selected"
     }
 
-    private val prefs: SharedPreferences
-
-    init {
-        prefs = PreferenceManager.getDefaultSharedPreferences(context)
-    }
+    private val prefs = PreferenceManager.getDefaultSharedPreferences(context)
 
     fun getSelectedDevice(): SelectedDevice {
         val id = prefs.getInt(KEY_SELECTED_DEVICE, SelectedDevice.UNDEFINED.ordinal)
