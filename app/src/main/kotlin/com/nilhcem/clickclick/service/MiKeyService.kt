@@ -9,8 +9,15 @@ import timber.log.Timber
 class MiKeyService : Service() {
 
     companion object {
-        fun start(context: Context) {
-            context.startService(Intent(context, MiKeyService::class.java))
+
+        private val EXTRA_MIKEY_ENABLED = "miKeyEnabled"
+
+        fun start(context: Context, miKeyEnabled: Boolean? = null) {
+            val intent = Intent(context, MiKeyService::class.java)
+            if (miKeyEnabled != null) {
+                intent.putExtra(EXTRA_MIKEY_ENABLED, miKeyEnabled)
+            }
+            context.startService(intent)
         }
     }
 
@@ -22,8 +29,17 @@ class MiKeyService : Service() {
         Timber.d("onStartCommand")
         if (intent == null) {
             Timber.d("intent is null, service has been restarted")
+        } else {
+            if (intent.hasExtra(EXTRA_MIKEY_ENABLED)) {
+                if (intent.getBooleanExtra(EXTRA_MIKEY_ENABLED, false)) {
+                    Timber.d("Enable MiKey service features")
+                    // TODO
+                } else {
+                    Timber.d("Disable MiKey service features")
+                    // TODO
+                }
+            }
         }
-
         return Service.START_STICKY
     }
 

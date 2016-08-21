@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import com.nilhcem.clickclick.model.app.SelectedDevice
 import com.nilhcem.clickclick.repository.ConfigRepository
+import com.nilhcem.clickclick.service.MiKeyService
 import com.nilhcem.clickclick.ui.SelectDeviceActivity
 import timber.log.Timber
 
@@ -65,7 +66,7 @@ class HeadsetPluggedReceiver : BroadcastReceiver() {
             }
             SelectedDevice.MIKEY -> {
                 Timber.d("MiKey unplugged")
-                // TODO stop routing audio + listening to click events
+                MiKeyService.start(context, false)
             }
         }
 
@@ -83,9 +84,9 @@ class HeadsetPluggedReceiver : BroadcastReceiver() {
     private fun onMiKeyPluggedIn(context: Context, config: ConfigRepository, selectedDevice: SelectedDevice) {
         if (selectedDevice == SelectedDevice.MIKEY) {
             Timber.d("MiKey plugged in")
-            // TODO: start routing audio + listening to click events
+            MiKeyService.start(context, true)
         } else {
-            Timber.d("(MiKey || Headset) plugged in. Ask user to select which device it actually is")
+            Timber.d("(MiKey || Headset) plugged in. Ask user to select the actual device")
             config.setSelectedDevice(SelectedDevice.PENDING)
             SelectDeviceActivity.show(context)
         }
