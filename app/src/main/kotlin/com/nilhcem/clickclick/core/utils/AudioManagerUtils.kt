@@ -14,7 +14,7 @@ object AudioManagerUtils {
      * @param state new connection state: 1 connected, 0 disconnected
      * @param name device name
      */
-    fun setWiredDeviceConnectionState(context: Context, device: Int, state: Int, name: String = "", address: String = "") {
+    fun setWiredDeviceConnectionState(context: Context, device: Int, state: Int, name: String, address: String = "") {
         val method: Method
         val audioManager = getAudioManager(context)
 
