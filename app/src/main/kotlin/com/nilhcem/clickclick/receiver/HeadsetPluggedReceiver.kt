@@ -7,6 +7,7 @@ import android.content.IntentFilter
 import com.nilhcem.clickclick.model.app.SelectedDevice
 import com.nilhcem.clickclick.repository.ConfigRepository
 import com.nilhcem.clickclick.service.MiKeyService
+import com.nilhcem.clickclick.service.helper.RouteAudioHelper
 import com.nilhcem.clickclick.ui.headset.SelectDeviceActivity
 import timber.log.Timber
 
@@ -17,7 +18,8 @@ class HeadsetPluggedReceiver : BroadcastReceiver() {
         private val EXTRA_STATE = "state"
         private val EXTRA_MICROPHONE = "microphone"
 
-        // We must register this receiver programmatically (due to FLAG_RECEIVER_REGISTERED_ONLY)
+        // We must register this receiver programmatically
+        // (due to HeadsetObserver sending FLAG_RECEIVER_REGISTERED_ONLY)
         fun register(context: Context): HeadsetPluggedReceiver {
             val receiver = HeadsetPluggedReceiver()
             context.registerReceiver(receiver, IntentFilter(Intent.ACTION_HEADSET_PLUG))
@@ -40,23 +42,39 @@ class HeadsetPluggedReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val config = ConfigRepository(context)
         val selectedDevice = config.getSelectedDevice()
+        val name = intent.getStringExtra("name") ?: intent.getStringExtra("portName")
         val state = intent.getIntExtra(EXTRA_STATE, 0)
         val hasMicrophone = intent.getIntExtra(EXTRA_MICROPHONE, 0) == 1
 
+        if (name == RouteAudioHelper.DEVICE_NAME) {
+            Timber.d("Received event from RouteAudioHelper")
+            config.setSelectedDevice(SelectedDevice.UNDEFINED)
+
+            // When the MiKeyService has been killed by the system, it is automatically restarted.
+            // If this event is resent, we restart the media button receiver
+            MiKeyService.enableMediaButtonReceiver(context)
+
+            // Routing the audio means we pretend that the Mikey plugged in has been unplugged
+            // This way, the OS will direct audio to the phone speakers instead of via the headset
+            // However, the system will receive an event indicating that the headset was unplugged.
+            // We ignore this event, as we want to intercept clicks from the MiKey
+            return
+        }
+
         if (state == 0) {
             if (selectedDevice != SelectedDevice.UNDEFINED) {
-                onDeviceUnplugged(context, config, selectedDevice)
+                onDeviceUnplugged(context, selectedDevice)
             }
         } else {
             if (state == 1 && hasMicrophone) {
-                onMiKeyPluggedIn(context, config, selectedDevice)
+                onMiKeyPluggedIn(context, selectedDevice, config)
             } else {
-                onHeadsetPluggedIn(config, selectedDevice)
+                onHeadsetPluggedIn(context, selectedDevice, config)
             }
         }
     }
 
-    private fun onDeviceUnplugged(context: Context, config: ConfigRepository, selectedDevice: SelectedDevice) {
+    private fun onDeviceUnplugged(context: Context, selectedDevice: SelectedDevice) {
         when (selectedDevice) {
             SelectedDevice.PENDING -> {
                 Timber.d("Dismiss device selection")
@@ -67,25 +85,24 @@ class HeadsetPluggedReceiver : BroadcastReceiver() {
             }
             SelectedDevice.MIKEY -> {
                 Timber.d("MiKey unplugged")
-                MiKeyService.start(context, false)
+                MiKeyService.disableMediaButtonReceiver(context)
             }
         }
-
-        config.setSelectedDevice(SelectedDevice.UNDEFINED)
     }
 
-    private fun onHeadsetPluggedIn(config: ConfigRepository, selectedDevice: SelectedDevice) {
+    private fun onHeadsetPluggedIn(context: Context, selectedDevice: SelectedDevice, config: ConfigRepository) {
         Timber.d("Headset plugged in")
 
         if (selectedDevice != SelectedDevice.HEADSET) {
             config.setSelectedDevice(SelectedDevice.HEADSET)
         }
+        MiKeyService.disableMediaButtonReceiver(context)
     }
 
-    private fun onMiKeyPluggedIn(context: Context, config: ConfigRepository, selectedDevice: SelectedDevice) {
+    private fun onMiKeyPluggedIn(context: Context, selectedDevice: SelectedDevice, config: ConfigRepository) {
         if (selectedDevice == SelectedDevice.MIKEY) {
             Timber.d("MiKey plugged in")
-            MiKeyService.start(context, true)
+            MiKeyService.enableAudioRouting(context)
         } else {
             Timber.d("(MiKey || Headset) plugged in. Ask user to select the actual device")
             config.setSelectedDevice(SelectedDevice.PENDING)

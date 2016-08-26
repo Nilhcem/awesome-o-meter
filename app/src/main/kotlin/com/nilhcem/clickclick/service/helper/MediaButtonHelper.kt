@@ -3,9 +3,9 @@ package com.nilhcem.clickclick.service.helper
 import android.annotation.TargetApi
 import android.content.Context
 import android.content.Intent
-import android.media.AudioManager
 import android.media.session.MediaSession
 import android.os.Build
+import com.nilhcem.clickclick.core.utils.AudioManagerUtils
 import com.nilhcem.clickclick.receiver.MediaButtonReceiver
 import timber.log.Timber
 
@@ -21,7 +21,7 @@ class MediaButtonHelper(private val context: Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             startMediaSession()
         } else {
-            getAudioManager().registerMediaButtonEventReceiver(receiverComponent)
+            AudioManagerUtils.getAudioManager(context).registerMediaButtonEventReceiver(receiverComponent)
         }
     }
 
@@ -32,11 +32,9 @@ class MediaButtonHelper(private val context: Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             stopMediaSession()
         } else {
-            getAudioManager().unregisterMediaButtonEventReceiver(receiverComponent)
+            AudioManagerUtils.getAudioManager(context).unregisterMediaButtonEventReceiver(receiverComponent)
         }
     }
-
-    private fun getAudioManager() = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private fun startMediaSession() {
