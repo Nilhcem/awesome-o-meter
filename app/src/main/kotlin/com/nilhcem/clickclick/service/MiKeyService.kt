@@ -68,13 +68,13 @@ class MiKeyService : Service() {
         Timber.d("onCreate")
         headsetPluggedReceiver = HeadsetPluggedReceiver.register(this)
         routeAudioHelper = RouteAudioHelper(this)
-        mediaButtonHelper = MediaButtonHelper(this)
+        mediaButtonHelper = MediaButtonHelper.create(this)
     }
 
     override fun onDestroy() {
         Timber.d("onDestroy")
-        HeadsetPluggedReceiver.unregister(this, headsetPluggedReceiver)
         mediaButtonHelper.disableReceiver()
+        HeadsetPluggedReceiver.unregister(this, headsetPluggedReceiver)
         super.onDestroy()
     }
 }
