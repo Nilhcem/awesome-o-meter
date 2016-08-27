@@ -1,4 +1,4 @@
-package com.nilhcem.clickclick.ui
+package com.nilhcem.clickclick.ui.main
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
