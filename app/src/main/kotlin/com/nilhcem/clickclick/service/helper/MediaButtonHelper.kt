@@ -19,14 +19,14 @@ abstract class MediaButtonHelper(protected val context: Context) {
 
     protected val receiverComponent = MediaButtonReceiver.getComponentName(context)
 
-    fun enableReceiver() {
-        Timber.d("Register MediaButtonReceiver")
+    fun enable() {
+        Timber.d("Register media button events")
         MediaButtonReceiver.enable(context)
         registerMediaButtonEvents()
     }
 
-    fun disableReceiver() {
-        Timber.d("Unregister MediaButtonReceiver")
+    fun disable() {
+        Timber.d("Unregister media button events")
         MediaButtonReceiver.disable(context)
         unregisterMediaButtonEvents()
     }

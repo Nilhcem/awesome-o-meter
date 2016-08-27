@@ -51,12 +51,12 @@ class MiKeyService : Service() {
             Timber.d("intent is null, service has been restarted")
         } else {
             if (intent.hasExtra(EXTRA_ROUTE_AUDIO)) {
-                routeAudioHelper.enableAudioRouting()
+                routeAudioHelper.enable()
             } else if (intent.hasExtra(EXTRA_ENABLE_MEDIA_BUTTON)) {
                 if (intent.getBooleanExtra(EXTRA_ENABLE_MEDIA_BUTTON, false)) {
-                    mediaButtonHelper.enableReceiver()
+                    mediaButtonHelper.enable()
                 } else {
-                    mediaButtonHelper.disableReceiver()
+                    mediaButtonHelper.disable()
                 }
             }
         }
@@ -73,7 +73,7 @@ class MiKeyService : Service() {
 
     override fun onDestroy() {
         Timber.d("onDestroy")
-        mediaButtonHelper.disableReceiver()
+        mediaButtonHelper.disable()
         HeadsetPluggedReceiver.unregister(this, headsetPluggedReceiver)
         super.onDestroy()
     }

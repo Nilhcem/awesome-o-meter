@@ -10,7 +10,7 @@ class RouteAudioHelper(private val context: Context) {
         val DEVICE_NAME = "MiKeyRouteAudio"
     }
 
-    fun enableAudioRouting() {
+    fun enable() {
         Timber.d("MiKey is plugged in. Route audio to phone speaker")
 
         val wiredHeadsetType = 4
