@@ -5,6 +5,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Vibrator
 import android.view.KeyEvent
 import com.nilhcem.clickclick.core.utils.Preconditions
 import com.nilhcem.clickclick.core.utils.Preconditions.checkNotNull
@@ -38,6 +39,8 @@ class MediaButtonReceiver : BroadcastReceiver() {
             val keyEvent = checkNotNull(intent.getParcelableExtra<KeyEvent>(Intent.EXTRA_KEY_EVENT))
             if (keyEvent.action == KeyEvent.ACTION_UP) {
                 Timber.i("Click received")
+
+                (context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator).vibrate(30)
                 clickRepo.insert()
             }
         }
