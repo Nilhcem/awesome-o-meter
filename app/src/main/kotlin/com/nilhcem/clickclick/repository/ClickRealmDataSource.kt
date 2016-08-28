@@ -13,7 +13,14 @@ class ClickRealmDataSource {
         click.date = date
     }
 
-    fun getTotal() = execute { realm ->
-        realm.where(Click::class.java).count()
+    fun getCount(from: Date? = null, to: Date? = null) = execute { realm ->
+        val where = realm.where(Click::class.java)
+        if (from != null) {
+            where.greaterThanOrEqualTo(Click.FIELD_DATE, from)
+        }
+        if (to != null) {
+            where.lessThanOrEqualTo(Click.FIELD_DATE, to)
+        }
+        where.count()
     }
 }

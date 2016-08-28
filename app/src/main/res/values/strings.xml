@@ -7,4 +7,8 @@
     <string name="select_device_message">If device is a MiKey, audio will be redirected to the phone speaker.</string>
     <string name="select_device_headset">Headphones</string>
     <string name="select_device_mikey">Mi-Key</string>
+
+    <!-- Dashboard -->
+    <string name="dashboard_count_today">Times being awesome today</string>
+    <string name="dashboard_count_total">Total awesomeness</string>
 </resources>

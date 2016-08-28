@@ -1,5 +1,8 @@
 package com.nilhcem.clickclick.repository
 
+import com.nilhcem.clickclick.model.app.dashboard.DashboardData
+import org.threeten.bp.LocalDate
+import org.threeten.bp.ZoneOffset
 import java.util.*
 
 class ClickRepository() {
@@ -10,7 +13,9 @@ class ClickRepository() {
         realm.insert(Date())
     }
 
-    fun getTotal(): Long {
-        return realm.getTotal()
+    fun getDashboardData(): DashboardData {
+        return DashboardData(getCountToday(), realm.getCount())
     }
+
+    private fun getCountToday() = realm.getCount(Date(LocalDate.now().atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()))
 }
