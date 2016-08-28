@@ -3,4 +3,6 @@
     <color name="colorPrimary">#E91E63</color>
     <color name="colorPrimaryDark">#C2185B</color>
     <color name="colorAccent">#FF9800</color>
+
+    <color name="chartGridColor">#DBDBDB</color>
 </resources>

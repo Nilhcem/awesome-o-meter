@@ -11,4 +11,7 @@
     <!-- Dashboard -->
     <string name="dashboard_count_today">Times being awesome today</string>
     <string name="dashboard_count_total">Total awesomeness</string>
+    <string name="dashboard_spinner_content_first">%d Days</string>
+    <string name="dashboard_spinner_content_second">" (%1$s - %2$s)"</string>
+    <string name="dashboard_spinner_date_format">MMM dd, yyyy</string>
 </resources>
