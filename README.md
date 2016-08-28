@@ -9,7 +9,7 @@
 
 Install this app, and plug a Xiaomi MiKey on your device.
 
-Everytime you feel awesome, for whatever reason, press the MiKey as many time as you want, to increase your awesomeness counter.
+Everytime you feel awesome, for whatever reason, press the MiKey as many times as you want, to increase your awesomeness counter.
 
 
 ## Why?
