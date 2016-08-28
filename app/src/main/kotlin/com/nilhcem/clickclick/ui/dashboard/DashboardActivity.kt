@@ -67,15 +67,16 @@ class DashboardActivity : AppCompatActivity(), DashboardMvp.View {
             override fun getDecimalDigits() = 0
         }
 
-        val lineDataSet = LineDataSet(data.chartData, null)
-        lineDataSet.color = ContextCompat.getColor(this, R.color.colorPrimary)
-        lineDataSet.lineWidth = 4f
-        lineDataSet.setCircleColor(lineDataSet.color)
-        lineDataSet.setDrawCircleHole(false)
-        lineDataSet.circleRadius = 2f
-        lineDataSet.setDrawValues(false)
+        with(LineDataSet(data.chartData, null)) {
+            color = ContextCompat.getColor(this@DashboardActivity, R.color.colorPrimary)
+            lineWidth = 4f
+            setCircleColor(color)
+            setDrawCircleHole(false)
+            circleRadius = 2f
+            setDrawValues(false)
+            chart.data = LineData(this)
+        }
 
-        chart.data = LineData(lineDataSet)
         chart.notifyDataSetChanged()
         chart.invalidate()
     }
