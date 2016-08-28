@@ -11,6 +11,9 @@ class DashboardPresenter : DashboardMvp.Presenter {
 
     override fun onCreate(view: DashboardMvp.View, savedInstanceState: Bundle?) {
         MiKeyService.start(view as Context)
+    }
+
+    override fun onRefreshDashboard(view: DashboardMvp.View) {
         view.setDashboardData(clickRepo.getDashboardData())
     }
 }

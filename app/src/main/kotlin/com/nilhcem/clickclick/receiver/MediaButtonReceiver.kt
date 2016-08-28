@@ -10,6 +10,7 @@ import android.view.KeyEvent
 import com.nilhcem.clickclick.core.utils.Preconditions
 import com.nilhcem.clickclick.core.utils.Preconditions.checkNotNull
 import com.nilhcem.clickclick.repository.ClickRepository
+import com.nilhcem.clickclick.ui.dashboard.DashboardActivity
 import timber.log.Timber
 
 class MediaButtonReceiver : BroadcastReceiver() {
@@ -33,16 +34,20 @@ class MediaButtonReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action == ACTION_LONG_CLICK) {
             Timber.i("Long click received")
-            clickRepo.insert()
+            insertClick(context)
         } else {
             Preconditions.checkArgument(intent.action == Intent.ACTION_MEDIA_BUTTON)
             val keyEvent = checkNotNull(intent.getParcelableExtra<KeyEvent>(Intent.EXTRA_KEY_EVENT))
             if (keyEvent.action == KeyEvent.ACTION_UP) {
                 Timber.i("Click received")
-
-                (context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator).vibrate(30)
-                clickRepo.insert()
+                insertClick(context)
             }
         }
+    }
+
+    private fun insertClick(context: Context) {
+        (context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator).vibrate(30)
+        clickRepo.insert()
+        DashboardActivity.notifyClickReceived(context)
     }
 }

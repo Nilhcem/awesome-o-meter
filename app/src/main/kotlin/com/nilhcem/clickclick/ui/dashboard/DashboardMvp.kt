@@ -13,5 +13,6 @@ interface DashboardMvp {
 
     interface Presenter {
         fun onCreate(view: View, savedInstanceState: Bundle?)
+        fun onRefreshDashboard(view: DashboardMvp.View)
     }
 }
