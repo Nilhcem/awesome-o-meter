@@ -14,4 +14,6 @@
     <string name="dashboard_spinner_content_first">%d Days</string>
     <string name="dashboard_spinner_content_second">" (%1$s - %2$s)"</string>
     <string name="dashboard_spinner_date_format">MMM dd, yyyy</string>
+    <string name="dashboard_chart_date_format_week">EEE</string>
+    <string name="dashboard_chart_date_format_other">M/dd</string>
 </resources>
