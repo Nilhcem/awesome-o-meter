@@ -124,7 +124,7 @@ class DashboardActivity : AppCompatActivity(), DashboardMvp.View {
                 isEnabled = true
                 setDrawAxisLine(false)
                 setDrawGridLines(false)
-                granularity = 1.0f
+                granularity = 1f
                 position = XAxis.XAxisPosition.BOTTOM_INSIDE
             }
 
@@ -132,10 +132,11 @@ class DashboardActivity : AppCompatActivity(), DashboardMvp.View {
                 isEnabled = true
                 setDrawAxisLine(false)
                 gridColor = ContextCompat.getColor(this@DashboardActivity, R.color.chartGridColor)
-                gridLineWidth = 3.0f
-                granularity = 1.0f
+                gridLineWidth = 3f
+                granularity = 1f
                 textColor = ContextCompat.getColor(this@DashboardActivity, R.color.colorPrimaryDark)
-                textSize = 12.0f
+                textSize = 12f
+                setAxisMinValue(0f)
             }
         }
     }
