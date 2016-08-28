@@ -81,8 +81,8 @@ class DashboardActivity : AppCompatActivity(), DashboardMvp.View {
     override fun getContext() = this
 
     override fun setDashboardData(data: DashboardData) {
-        todayCount.text = data.todayCount.toString()
-        totalCount.text = data.totalCount.toString()
+        todayCount.setCount(data.todayCount)
+        totalCount.setCount(data.totalCount)
 
         chart.xAxis.valueFormatter = object : AxisValueFormatter {
             override fun getFormattedValue(value: Float, axis: AxisBase?): String {
@@ -125,7 +125,7 @@ class DashboardActivity : AppCompatActivity(), DashboardMvp.View {
                 setDrawAxisLine(false)
                 setDrawGridLines(false)
                 granularity = 1f
-                position = XAxis.XAxisPosition.BOTTOM_INSIDE
+                position = XAxis.XAxisPosition.BOTTOM
             }
 
             with(axisLeft) {
