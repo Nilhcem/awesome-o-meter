@@ -13,7 +13,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 import com.nilhcem.clickclick.R
-import com.nilhcem.clickclick.model.app.dashboard.TimePeriod
+import com.nilhcem.clickclick.model.app.dashboard.DateRange
 import org.threeten.bp.LocalDate
 import org.threeten.bp.format.DateTimeFormatter
 
@@ -28,7 +28,7 @@ class DashboardSpinnerAdapter : BaseAdapter {
         val spanBlack = ForegroundColorSpan(Color.parseColor("#404040"))
         val spanBold = StyleSpan(Typeface.BOLD)
 
-        values = TimePeriod.values().map {
+        values = DateRange.values().map {
             val daysStr = context.getString(R.string.dashboard_spinner_content_first, it.nbDays)
 
             val sb = SpannableStringBuilder()
@@ -55,5 +55,5 @@ class DashboardSpinnerAdapter : BaseAdapter {
 
     override fun getItemId(position: Int) = position.toLong()
 
-    override fun getCount() = TimePeriod.values().size
+    override fun getCount() = DateRange.values().size
 }

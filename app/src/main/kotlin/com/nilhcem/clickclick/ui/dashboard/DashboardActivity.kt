@@ -8,6 +8,8 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.app.AppCompatActivity
+import android.view.View
+import android.widget.AdapterView
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.LineData
@@ -15,15 +17,18 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.AxisValueFormatter
 import com.nilhcem.clickclick.R
 import com.nilhcem.clickclick.model.app.dashboard.DashboardData
+import com.nilhcem.clickclick.model.app.dashboard.DateRange
 import kotlinx.android.synthetic.main.dashboard.*
 
 class DashboardActivity : AppCompatActivity(), DashboardMvp.View {
 
     companion object {
+        private val STATE_DATE_RANGE = "selectedDateRange"
         private val BROADCAST_EVENT_NAME = "clickEvent"
 
-        fun notifyClickReceived(context: Context) =
-                LocalBroadcastManager.getInstance(context).sendBroadcast(Intent(BROADCAST_EVENT_NAME))
+        fun notifyClickReceived(context: Context) {
+            LocalBroadcastManager.getInstance(context).sendBroadcast(Intent(BROADCAST_EVENT_NAME))
+        }
     }
 
     private val presenter: DashboardMvp.Presenter = DashboardPresenter()
@@ -36,9 +41,21 @@ class DashboardActivity : AppCompatActivity(), DashboardMvp.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.dashboard)
+
         spinner.adapter = DashboardSpinnerAdapter(this)
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parentView: AdapterView<*>, selectedItemView: View?, position: Int, id: Long) {
+                presenter.setDateRange(this@DashboardActivity, DateRange.values()[position])
+            }
+
+            override fun onNothingSelected(parentView: AdapterView<*>) {
+            }
+        }
+
         initChart()
+
         presenter.onCreate(this, savedInstanceState)
+        presenter.setDateRange(this, if (savedInstanceState == null) DateRange.ONE_WEEK else DateRange.values()[savedInstanceState.getInt(STATE_DATE_RANGE)])
     }
 
     override fun onStart() {
@@ -49,6 +66,11 @@ class DashboardActivity : AppCompatActivity(), DashboardMvp.View {
     override fun onResume() {
         super.onResume()
         presenter.onRefreshDashboard(this)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt(STATE_DATE_RANGE, presenter.getDateRange().ordinal)
     }
 
     override fun onStop() {
@@ -63,7 +85,14 @@ class DashboardActivity : AppCompatActivity(), DashboardMvp.View {
         totalCount.text = data.totalCount.toString()
 
         chart.xAxis.valueFormatter = object : AxisValueFormatter {
-            override fun getFormattedValue(value: Float, axis: AxisBase?) = data.chartAxisStr[value.toInt()]
+            override fun getFormattedValue(value: Float, axis: AxisBase?): String {
+                val intValue = value.toInt()
+                if (intValue >= data.chartAxisStr.size) {
+                    return ""
+                }
+                return data.chartAxisStr[value.toInt()]
+            }
+
             override fun getDecimalDigits() = 0
         }
 
