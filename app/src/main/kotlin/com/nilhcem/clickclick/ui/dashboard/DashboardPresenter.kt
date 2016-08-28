@@ -4,6 +4,8 @@ import android.content.Context
 import android.os.Bundle
 import com.nilhcem.clickclick.repository.ClickRepository
 import com.nilhcem.clickclick.service.MiKeyService
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 
 class DashboardPresenter : DashboardMvp.Presenter {
 
@@ -14,6 +16,11 @@ class DashboardPresenter : DashboardMvp.Presenter {
     }
 
     override fun onRefreshDashboard(view: DashboardMvp.View) {
-        view.setDashboardData(clickRepo.getDashboardData())
+        doAsync {
+            val data = clickRepo.getDashboardData()
+            uiThread {
+                view.setDashboardData(data)
+            }
+        }
     }
 }
