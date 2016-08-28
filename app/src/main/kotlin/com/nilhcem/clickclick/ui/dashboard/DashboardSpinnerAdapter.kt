@@ -1,11 +1,10 @@
 package com.nilhcem.clickclick.ui.dashboard
 
 import android.content.Context
-import android.graphics.Color
 import android.graphics.Typeface
+import android.support.v4.content.ContextCompat
 import android.text.Spannable
 import android.text.SpannableStringBuilder
-import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
@@ -25,7 +24,7 @@ class DashboardSpinnerAdapter : BaseAdapter {
         val today = LocalDate.now()
         val dateFormat = DateTimeFormatter.ofPattern(context.getString(R.string.dashboard_spinner_date_format))
         val todayStr = today.format(dateFormat)
-        val spanBlack = ForegroundColorSpan(Color.parseColor("#404040"))
+        val spanBlack = ContextCompat.getColor(context, R.color.spinner_black)
         val spanBold = StyleSpan(Typeface.BOLD)
 
         values = DateRange.values().map {

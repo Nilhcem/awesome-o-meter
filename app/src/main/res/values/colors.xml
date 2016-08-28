@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#E91E63</color>
-    <color name="colorPrimaryDark">#C2185B</color>
-    <color name="colorAccent">#FF9800</color>
+    <color name="color_primary">#E91E63</color>
+    <color name="color_primary_dark">#C2185B</color>
+    <color name="color_accent">#FF9800</color>
 
-    <color name="chartGridColor">#DBDBDB</color>
+    <color name="spinner_black">#404040</color>
+    <color name="chart_grid_color">#DBDBDB</color>
 </resources>

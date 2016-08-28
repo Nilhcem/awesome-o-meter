@@ -97,7 +97,7 @@ class DashboardActivity : AppCompatActivity(), DashboardMvp.View {
         }
 
         with(LineDataSet(data.chartData, null)) {
-            color = ContextCompat.getColor(this@DashboardActivity, R.color.colorPrimary)
+            color = ContextCompat.getColor(this@DashboardActivity, R.color.color_primary)
             lineWidth = 4f
             setCircleColor(color)
             setDrawCircleHole(false)
@@ -131,10 +131,10 @@ class DashboardActivity : AppCompatActivity(), DashboardMvp.View {
             with(axisLeft) {
                 isEnabled = true
                 setDrawAxisLine(false)
-                gridColor = ContextCompat.getColor(this@DashboardActivity, R.color.chartGridColor)
+                gridColor = ContextCompat.getColor(this@DashboardActivity, R.color.chart_grid_color)
                 gridLineWidth = 3f
                 granularity = 1f
-                textColor = ContextCompat.getColor(this@DashboardActivity, R.color.colorPrimaryDark)
+                textColor = ContextCompat.getColor(this@DashboardActivity, R.color.color_primary_dark)
                 textSize = 12f
                 setAxisMinValue(0f)
             }
